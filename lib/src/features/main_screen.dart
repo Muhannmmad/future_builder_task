@@ -8,8 +8,8 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final TextEditingController _zipController = TextEditingController();
-  Future<String>? _cityFuture;
+  final TextEditingController zipController = TextEditingController();
+  Future<String>? cityFuture;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class _MainScreenState extends State<MainScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                controller: _zipController,
+                controller: zipController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: "Postleitzahl",
@@ -31,14 +31,14 @@ class _MainScreenState extends State<MainScreen> {
               OutlinedButton(
                 onPressed: () {
                   setState(() {
-                    _cityFuture = getCityFromZip(_zipController.text);
+                    cityFuture = getCityFromZip(zipController.text);
                   });
                 },
                 child: const Text("Suche"),
               ),
               const SizedBox(height: 32),
               FutureBuilder<String>(
-                future: _cityFuture,
+                future: cityFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
@@ -65,12 +65,6 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _zipController.dispose();
-    super.dispose();
   }
 
   Future<String> getCityFromZip(String zip) async {
